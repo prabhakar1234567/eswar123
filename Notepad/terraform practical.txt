@@ -1,0 +1,51 @@
+ec2-instance creation using terraform
+======================================
+provider "aws" {
+  region     = "ap-south-1"
+  access_key = "AKIA4U5NXH5Y7INV5NPX"
+  secret_key = "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"
+}
+resource "aws_instance" "ajayprasad" {
+  ami           = "ami-008b85aa3ff5c1b02"
+  instance_type = "t2.micro"
+}
+
+vpc
+====
+provider "aws" {
+  region     = "ap-south-1"
+  access_key = "AKIA4U5NXH5Y7INV5NPX"
+  secret_key = "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"
+}
+
+resource "aws_vpc" "demo_vpc" {
+  cidr_block = "10.0.0.0/16"
+  tags = {
+    name = "ajay"
+  }
+}
+resource "aws_subnet" "pubsubnet" {
+  vpc_id     = aws_vpc.demo_vpc.id
+  cidr_block = "10.0.0.0/24"
+}
+resource "aws_subnet" "pvtsubnet" {
+  vpc_id     = aws_vpc.demo_vpc.id
+  cidr_block = "10.0.1.0/24"
+}
+resource "aws_internet_gateway" "igw" {
+  vpc_id = aws_vpc.demo_vpc.id
+
+}
+resource "aws_route_table" "rt" {
+  vpc_id = aws_vpc.demo_vpc.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.igw.id
+  }
+}
+
+resource "aws_route_table_association" "PublicRTassociation" {
+  subnet_id      = aws_subnet.pubsubnet.id
+  route_table_id = aws_route_table.rt.id
+}

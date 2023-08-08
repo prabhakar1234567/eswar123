@@ -1,0 +1,16 @@
+scripted pipeline code for maven build stage
+===========
+stage('build code'){
+            steps{
+                def mavenHome = tool name: "Maven-3.8.6", type: "maven"
+                def mavenCMD = "${mavenHome}/bin/home"
+                sh "${mavenCMD} clean package"
+
+
+
+ stage('build code'){
+            steps{
+                sh "mvn clean install"
+                
+            }
+        }

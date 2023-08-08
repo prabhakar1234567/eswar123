@@ -1,0 +1,116 @@
+Deploy MySQl in Kubernetes Cluster
+==================================
+step1:first create a secret file
+
+vi Secret.yml
+-------------
+apiVersion: v1
+Kind: Secret
+metadata:
+   name: mysql-secret
+data:
+user: mysql-secret
+passwd: prabha123
+
+kubectl create -f Secret.yml
+
+step2: create persistent volume and volume claim.
+
+vi Persistent Volume.yml  (vi storage.yml)
+-------------------------
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mysql-pv-volume
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage:20Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/data"
+---
+apiVersion: v1
+kind: PersistentVolume-claim
+metadata:
+  name: mysql-pv-claim
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resorces:
+    requests:
+      storage: 20Gi
+
+kubectl create -f storage.yml
+
+
+Step3:
+------
+create a deployment file for mysql
+
+vi deployment.yml
+------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  Replicas: 1
+  selector:
+    matchLables:
+      app: mysql
+  Template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:latest
+        envFrom:
+          secretkeyRef:
+            name: mysql-secret
+        ports:
+        - containerPort: 3306
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+spec:
+  type: nodeport
+  ports:
+    - targetport:80
+      port: 3306
+  selector:
+    app: mysql 
+
+kunectl create -f deployment.yml
+
+
+2)write a docker file to build a custom nginx image
+====================================================
+before writing a docker file install nginx 
+vi index.html
+-------------
+--
+---
+-----
+
+vi dockerfile.yml
+-----------------
+FROM nginx:latest
+MAINTAINER "prabhakar"
+#RUN yum install nginx -y
+COPY index.html /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemonset off;"]
+   (executable)(parameter)(parameter)
+
+docker build -t dockerfile.yml .
+
+3)

@@ -1,0 +1,182 @@
+SCM :source code management
+===========================
+git:
+==== git is an open-source source code management tool/version control system, git is a general s/w tool in your local system.
+scm:
+---  
+1.git manage the source code
+2.developers develop a code in git and upload into github it automatically capture the logs.
+3.track the changes
+
+why git:
+-------- 
+1.secure & fast
+2.2005
+3.branches
+4.git log
+
+git installations
+=================
+https://git-scm.com/downloads (64 bit)
+
+Github
+======
+github is a centralized platform for scm & version control ,collaboraions. 
+1.track the changes
+2.maintaining branches
+3.creating new repos
+4.forks
+
+git basic commands
+===================
+git init (to initialize the empty repo)
+git config --global user.name "your name"
+git config --global user.email "your@gamil.com"
+
+*).git clone https://github.com/prabhakar1234567/mvn-proj.git(github repo url)
+
+Git conains workspace,staging,local
+*)touch file1
+ls
+git add .
+git add *
+git add filename           ----->workspace to staging
+git status
+git commit -m "lable msg"  ----->staging to local
+git log                    -----> display logs(file commit id,msg,author)
+git reset head filename    -----> staging to workspace back to files)
+git reset --soft cid       -----> local to staging
+git reset --mixed cid      -----> direct local to workspace
+git push                   -----> to upload the fles from local to centarl)
+git log
+git log -n         (give number in n place it will display certain logs)
+git log --oneline  (print the logs in oneline)
+git log --author=name
+git log --since=yy-mm-dd (or)
+git log --after=yy-mm-dd
+git log --until=yy-mm-dd (or)
+git log --before=yy-mm-dd
+git log --since=yy-mm-dd git --until=yy-mm-dd  (inbetween)
+
+
+git branches
+============
+git branches is the copy of the data or new versioning of the data    git branching startegy
+to manage the versions                                                future branch
+to merge the data                                                     release branch,hotfix
+
+git branch   ---> show the branches
+git branch branchname  -----> to craete a new branch
+git checkout branchname  ----> swittch to branch
+touch fi f2
+git add .
+git status  ----> to show to status of files
+git commit -m "label msg"
+git push (or) 
+git merge branchname
+git checkout branch
+ls
+git push (or)
+git push origin branch
+git branch -d branchname  (to delete a branch)
+git branch -D branchname  (delete the branch without merging the changes of files in branch)
+
+git  merge conflict
+====================
+ A conflict arises when two separate branches have made edits to the same line in a file, or a file the merge conflict occurs
+master
+------
+touch f1 f2
+vi f2
+git add .
+git commit -m "msg"
+ls
+git branch release1
+vi f2
+--
+--
+git add .
+git commit -m "modified"
+git checkout release1
+vi f2
+--
+--
+git add .
+git commit -m "msg"
+git merge master(merge conflict occur)
+git merge --abort (skip the conflict)
+git merge master
+cat f2
+to remove the unneccesary inform & save
+git add .
+git commit -m "msg"
+git push
+
+Stash
+=====
+git stash is a temporary storage in local by uisng stash to jump the task & and comeback to normal place
+git stash accept only modified and staging area files only
+
+git stash list
+git stash save "stash1"
+git stash list
+git stash save "stash2"
+==>by using 3 ways to getback the files in stash
+pop(cut/paste)
+---
+git stash pop (take 0th default)
+git stash pop stash@{2}
+
+apply(copy/paste)
+git stash apply
+git stash apply stash@{2}
+
+drop(delete)
+git stash drop
+
+git rebase
++++++++++==
+in two different braches paralley made some changes and merge the branches the one extra cid will occur by using rebase to solve the extra cid 
+git rebase branch
+
+git amend
+=========
+by using amend to modify the latest commit msgs
+
+git commit --amend -m "msg"
+
+revert
+======
+revert means once to made changes and upload into hub to get back the previous data by usinng revert to get back the data
+git revert cid
+
+cherry-pick
+===========
+to commit the particular commit id from one branch to anotherr
+git cherry-pick cid
+
+git fetch
+=========
+to retrive the files from remote to local origin
+
+git pull
+========
+get the new changes from central to local
+
+git pull=git fetch+git merge
+
+git clone
+=========
+ copying the remote server repository to your local machine
+Git tag:
+=======
+tag is used for easy identification purpose
+to mark the release points
+git tag
+git tag T-1.0
+git tag T-2.0
+git tag (show the tags list)
+git show T-1.0
+git tag -d T-1.0 (delete the tag)
+git checkout T-2.0 (switch to another tag)
+git push origin -d T-1.0 (to delete in central)

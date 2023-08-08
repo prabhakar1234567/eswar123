@@ -1,0 +1,144 @@
+Scripting:
+=========
+if statement
+------------
+#!/bin/bash
+echo "Enter your Age:"
+read age
+if [ $age -ge 18 ]
+then
+echo "your eligible for voting"
+else
+echo "your not eligible for voting"
+echo "Thank You!."
+fi
+
+elif
+#!/bin/bash
+echo "select traffic signals RED GREEN YELLOW"
+read colour
+if [ $colour == RED ];
+then
+echo "Red colour indicates STOP"
+elif [ $colour == GREEN ];
+then
+echo "GREEN colour indicates START"
+elif [ $colour == YELLOW ];
+then
+echo "Yellow colour indicates ready to start"
+else
+echo "Sorry This colour is not avalible in our script!"
+echo "Thank you!!.."
+fi
+
+
+for loop
+========
+#!/bin/bash
+for i in 1 2 3 4 5 6 7
+do
+touch file$i
+done
+
+2)
+#!/bin/bash
+for i in {1..77}
+do
+rm -rf file$i
+done
+
+3)
+#!/bin/bash
+for table in {2..20..2}
+do
+echo "Table for 2: $table"
+done
+
+4)
+#!/bin/bash
+for (( i=20; i>= 10; i--))
+do
+echo "$i"
+done
+
+while loop
+===========
+i=10;
+while [ $i -ge 5 ];
+do
+echo "Reverse order number $i"
+let i--;
+done
+
+2)
+#!/bin/bash
+while true
+do
+echo "This is infinite loop."
+sleep 10
+echo " press ctrl+c to exit"
+sleep 10
+done
+
+case
+====
+#!/bin/bash
+#States of citys.
+
+echo "Choose DevOps Tools Name Chef Ansible Docker Jenkins "
+read tool
+case $tool in
+Chef) echo "Chef is CM Tool :)"
+;;
+Ansible) echo "Ansible is CM Tool"
+;;
+Docker) echo "Docker is container tool"
+;;
+Jenkins) echo "Jenkins is CI/CD Tool"
+;;
+*) echo "I don't know"
+;;
+esac
+
+variables
+==========
+var1=hello
+var2=world
+echo "$var1 $var2"
+
+
+parameters
+===========
+echo "This script name is :$0"
+echo "1st parameter is :$1"
+echo "2nd parameter is :$2"
+echo "script PID is :$$"
+echo "toal no.of arguments in script :$#"
+
+1)
+#!/bin/bash
+echo "enter your name:"
+read name
+echo "enter company name:"
+read company
+
+2)
+#!/bin/bash
+echo "Enter Your Name:"
+read a
+echo "Enter Company Name:"
+read b
+echo "Your Name: $a , Company Name: $b"
+echo "Thank You!"
+
+3)s1.sh
+#!/bin/bash
+user=jenkins
+port=8080
+name=devops
+
+4)s2.sh
+#!/bin/bash
+source s1.sh
+echo "This is $user with $port"
+echo "Training name $name"

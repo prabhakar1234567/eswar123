@@ -1,0 +1,132 @@
+chef
+====
+chef is an open source configure management tool, configure management in the sence something should be execute/perform on the systems or different servers.
+to perform an action at time in different servers. chef is a pull based configure tool (agent based configure ).
+chef contains:
+chef workstation: workstation is in your local system
+chef server: server is in host
+chef node servers: chef node servers
+
+chef contains cookbooks and cookbook contains many recipes (cookbook contains different tasks)
+
+cd chef-repo
+
+to add the node servers to the chef server
+------------------------------------------
+knife node bootstrap ip address -U username -P password -N node name
+
+cd cookbooks
+to create a cookbook
+chef generate cookbook cookbook name
+ls
+cd cookbook name
+cd recipes
+vi default.rb
+--------------
+file "/opt/file123"
+:wq!
+knife cookbook upload cookbook name  ------>uploading cookbook into chef server
+refresh your chef.io server
+node-->key run list-->
+1.drag and drop your cookbook in run list
+2.knife node run_list add node name "recipe[cookbook]
+ knife node run_list remove node name "recipe[cookbook]
+
+node server
+----------
+chef-client
+
+particular cookbook is add to different nodes
+=============================================
+for i in node1 node2
+do
+knife node run_list "recipe[cookbook]", "recipe[cookbook]"
+done
+----------
+data bags
+==========
+data bags are the global variables i.e, created in workstation & upload into chef server 
+mkdir data_bags
+cd data_bags
+mkdir users groups
+ls
+knife data bag create users
+knife data bag create groups
+--> refresh in chef server
+cd users
+vi user1.json
+-------------
+{
+"id": "prabhakar"
+"comment": "welcome to devops"
+"uid": 200
+"gid": 01
+"home": "/home/prabhakar"
+"shell": "/bin/bash"
+}
+
+vi user2.json
+---------------
+{
+"id": "bhaskar"
+"comment": "welcome to devops"
+"uid": 2002
+"gid": 011
+"home": "/home/bhaskar"
+"shell": "/bin/bash"
+}
+
+-->knife data bag from file users userl.json user2.json
+ 
+cd groups
+vi group.json
+-----------
+{
+"id": "batch85"
+"gid": 300
+"members": ["user1","user2"]
+}
+
+knife data bag from file groups group.json
+
+cd cookbooks
+chef generate cookbook users
+cd users
+cd recipes
+vi default.rb
+-------------
+search("users", "*:*").each do |user_data|
+user user_data["id"] do
+comment user_data["comment"]
+uid user_data["uid"]
+gid user_data["gid"]
+home user_data["home"]
+shell user_data["shell"]
+end
+end
+
+vi group.rb
+------------
+search("groups", "*:*").each do |group_data|
+group group_data["id"] do
+gid group_data["gid"]
+members group_data["members"]
+end
+end
+
+knife cookbook upload users
+knife cookbook upload groups
+
+drag & drop cookbooks into run list & save
+add users::group
+
+----
+vi default.rb
+-----
+.
+..
+
+..
+include_recipe "users::group"
+
+:wq!

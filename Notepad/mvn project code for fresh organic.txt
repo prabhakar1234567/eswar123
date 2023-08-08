@@ -1,0 +1,21 @@
+mvn pipeline code
+=================
+
+pipeline {
+    agent any
+    environment {
+        PATH = "/usr/bin:$PATH"
+    }
+    stages {
+        stage('git clone') {
+            steps {
+                git credentialsId: 'Git-Hub', url: 'https://github.com/prabhakar1234567/Fresh-organic-products.git'
+            }
+        }
+        stage('Build code') {
+            steps {
+                sh "mvn install"
+            }
+        }
+    }    
+}

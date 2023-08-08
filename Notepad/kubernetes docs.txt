@@ -1,0 +1,235 @@
+Kubernetes
+===========
+kubernetes is also known as k8s.
+kubernetes is an open source platform,developed by google.and it is a container orchestration system/container management tool.it automates
+the deployment and scaleup processes.
+
+objects of k8s:
+===============
+pod
+===
+pod is the smallest basic deployable object in k8s.pod represents single instances of your running process of cluster.
+pod contains single or multiple containers.
+
+Node
+-----
+node is nothing but a single host, to run the applications
+
+service:
+=========
+service in k8s its a logical set of pods to worktogether, with the help of services user easily manage the load balancing.
+it contanins port, target port, Node port ,by using nodeport to access the application in browser
+
+Replicaset:
+===========
+a replicaset in k8s is used to identify the particular no of replicas and pods are running at a time 
+it is responsible for pods, containers
+1)it create pods and containers
+2)pods are not working replicaset will replace another one immediately
+
+Namespace:
+==========
+way to organize the clusters into virtual sub clusters.
+
+components of k8s
+==================
+API server:
+-----------
+The Kubernetes API server receives the REST commands which are sent by the user. After receiving, it validates the REST requests, process, 
+and then executes them. After the execution of REST commands, the resulting state of a cluster is saved in 'etcd' as a distributed key-value store.
+
+scheduler
+=========
+The scheduler in a master node schedules the tasks to the worker nodes.
+
+controller
+===========
+it controll the pods and containers, tasks
+
+Kubelet
+========
+kubelet is a nodeagent that executes in each and every node server, its takes care of pods and containers working.
+it also start stop and maintains the conainers.
+
+Kube-proxy
+===========
+kube-proxy in k8s is executed in each and every node in the cluster. The main aim of this component is request forwarding. Each node interacts with 
+the Kubernetes services through Kube-proxy.
+
+Pods:
+=====
+pod1.yml
+--------
+apiVersion: v1
+kind: Pod
+metadata:
+  name: aaa
+  labels:
+    app: webapp
+spec:
+  containers:
+  - name: cont1
+    image: nginx
+    ports:
+    - containerPort: 80
+
+kubectl create -f pod1.yml
+
+Namespace.yml
+=============
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: aaa
+  namespaces: ns1
+spec:
+  containers:
+  - name: cont1
+    image: nginx
+    ports:
+    - containerPort: 8080
+
+kubectl create -f namespace.yml
+
+
+rs.yml
+------
+replicaset
+===========
+apiVersion: apps/v1
+kind: Replicaset
+metadata:
+  name: aaa
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: webapp
+  template:
+    metadata:
+      labels:
+        app: webapp
+    spec:
+    containers:
+    - name: cont1
+      image: nginx
+      ports:
+      - containerPort: 8080
+
+kubectl create -f rs.yml
+
+kubectl apply -f rs.yml
+
+deploy.yml
+===========
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aaa
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: webapp
+  template:
+    metadata:
+      labels:
+        app: webapp
+    spec:
+    containers:
+    - name: cont1
+      image: nginx
+      ports:
+      - containerPort: 8080
+
+kubectl create -f deploy.yml
+
+kubectl apply -f deploy.yml
+
+
+
+service.yml
+===========
+pod1.yml
+--------
+apiVersion: v1
+kind: Pod
+metadata:
+  name: aaa
+  labels:
+    app: webapp
+spec:
+  containers:
+  - name: cont1
+    image: nginx
+    ports:
+    - containerPort: 80
+
+service.yml
+------------
+apiVersion: apps/v1
+kind: Service
+metadata:
+  name: service1
+spec:
+    type: NodePort
+    ports:
+    -  targetPort: 80
+       port: 81
+       nodePort: 30005
+    selector:
+       app:webapp
+
+kubectl create -f service.yml
+
+deploy.yml
+===========
+apiVAersion: apps/v1
+kind: Deployment
+metadata:
+  name: aaa
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: webapp
+  template:
+    metadata:
+      labels:
+        app: webapp
+    spec:
+    containers:
+    - name: cont1
+      image: nginx
+      ports:
+      - containerPort: 8080
+
+kubectl create -f deploy.yml
+
+
+browse IP:30005
+
+secrets
+-------
+to store the credentials in safe
+
+secrets.yml
+----------
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mysecret
+data:
+  username: prabhakar
+  passwd: ppppp
+
+kubectl create -f secret.yml
+
+to call the secrets in pods
+-------------------------
+in the final 
+
+envFrom:
+  -secretRef:
+     name: mysecret
+

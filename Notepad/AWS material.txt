@@ -1,0 +1,83 @@
+aws
+===
+EC2:Elastic compute cloud
+-------------------------
+ec2 is a web service that provides secure,resizable compute capacity in the cloud.
+ec2 is a virtual machine that allows you to create and run the applications.
+
+S3:
+===
+simple storage service 
+Amazon S3 is an object storage service that stores data as objects within buckets. 
+An object is a file and any metadata that describes the file.
+s3 buckets are public cloud storage containers for objects storage.
+using amazon s3 we can store and retrive any kind of data anytime anywhere.
+pay how much you can use.
+
+vpc
+===
+virtual private cloud
+
+vpc creates a logical isolated area in the cloud.
+A VPC allows you to secure your virtual networking environment, including your IP addresses,
+subnets and network gateways.
+
+subnet:
+------
+subnet means gives a ranges of ip address
+2 types of subnets
+1.public subnet
+2.private subnet
+
+1.public subnet: public subnet is a subnet that is associated with route table that has a route 
+to internet gateway. this entire process is connect with vpc
+
+2.private subnet:  is a subnet that is associated with route table that has not connected 
+to internet gateway. this entire process is connect with vpc.
+ 
+{private subnet is to achieve by using NAT gatway.}
+
+{IGW instances allows public ip address to access the internet
+NAT GW instances allows no public ip address to access the internet}
+
+AutoScalling
+============
+AutoScalling is a service provided by aws. autoscalling helps the user to monitor the aws
+resources and adjust the capacity.
+
+
+ELB:
+====
+Elastic load balancing
+----------------------
+ELB in the name itself balancing the load 
+Elastic Load Balancing automatically distributes your incoming traffic across multiple targets,
+types of ELB
+------------
+1)application load balancer:A load balancer serves as the single point of contact for clients. 
+Clients send requests to the load balancer, and the load balancer sends them to targets,
+2)network load balancer:The Network Load Balancing (NLB) feature distributes traffic across
+several servers by using the TCP/IP networking protocol.
+3)classic load balancer:
+
+Route53:
+========
+Extension of DNS service.
+Amazon Route 53 is a highly available and scalable Domain Name System (DNS) web service. 
+Route 53 connects user requests to internet applications running on AWS or on-premises.
+AWS Route 53 translates URL names, such as www.wordpress.com, into their corresponding 
+numeric IP addresses—in this example, 198.143.164.252.
+
+To achieve route53 by using functonalities
+1)Domain name registration
+2)Routing policy
+3)Health checking
+1)Domain registration:aws allows users to register for domain names (urls) like .com, .net, .io;
+2)The simplest and most common routing type, this policy merely uses AWS Route 53 to map 
+your site name to your IP.
+3)AWS Route 53 conducts health checks and monitors the health and performance of applications
+
+DNS:
+====
+DNS, or the Domain Name System, translates human readable domain names (for example, www.amazon.com) to
+machine readable IP addresses (for example, 192.0.2.44).

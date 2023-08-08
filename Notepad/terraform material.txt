@@ -1,0 +1,133 @@
+Terraform
+==========
+Terraform ia an open-source infrastructure as a code tool for building,changing, versioning the
+infrastructure safely and effectively.It supports different cloud platforms like Aws, azure, gcp.
+Terraform is a declarative coding tool.
+
+terrform basic commands
+========================
+terraform init
+terraform plan
+terraform apply
+terraform show
+terraform destroy
+
+write a terraform script for ec2 instances
+-------------------------------------------
+
+terraform ec2.tf
+================
+provider "aws" {
+region = "ap-south-1"
+}
+resource "aws_instance" "dev" {
+ami = "ami-234567888854"
+instance type = "t2.micro"
+}
+tags {
+name = "ec2_instance"
+}
+
+2)write a terraform script for vpc
+===================================
+vpc.tf
+======
+provider "aws" {
+region = "ap-south-1"
+}
+resource "aws_vpc" "vpc" {
+cidr_block = "10.0.0.0/16"
+tags{
+name = "vpc"
+}
+}
+## creating public subnet
+resource "aws_pubsubnet" "pubsubnet" {
+vpc_id = "${aws_vpc.vpc.id}"
+cidr_block = "10.0.0.0/24"
+tags{
+name = subnet
+}
+}
+## creating pvt subnet
+resource "aws_pvtsubnet" "pvtsubnet" {
+vpc_id = "${aws_vpc.vpc.id}"
+cidr_block = "10.0.1.0/24"
+tags{
+name = subnet
+}
+}
+## creating internet gateway
+resource "aws_igw" "igw" {
+vpc_id = "${aws_vpc.vpc.id}"
+tags {
+name = "igw"
+}
+}
+## creating route table
+resource "aws_route table" "tb" {
+vpc_id = "${aws_vpc.vpc.id}"
+route {
+cidr_block = "0.0.0.0/0"
+gateway_id = "${aws_igw.igw.id}"
+tags {
+name = "rt"
+}
+}
+}
+
+##associate rt and subnets
+resource "aws_route table" "rt" {
+subnet_id = "${aws_pubsubnet.pubsubnet.id}"
+route_id = "${aws_route table.rt.id}"
+}
+
+
+3)creating a security group
+============================
+resource "aws_security group" "sg" {
+vpc_id = "${aws_vpc.vpc.id}"
+
+ingress {
+        from_port = 80
+        to_port = 80
+        protocol = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+  }
+ingress {
+        from_port = 22
+        to_port = 22
+        protocol = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+  }
+egress {
+        from_port = 0
+        to_port = 0
+        protocol = "-1"
+        cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+
+4)create ebs volumes
+====================
+resource "aws_ebs_volume" "ebs" {
+availability_zone = "us-east-1a"
+size              = 8
+tags {
+name = ebs
+
+}
+
+}
+
+
+5)write a terraform script for s3 bucket in aws.
+=================================================
+resource "aws_s3_bucket" "s3_bucket" {
+name = "s3_bucket"
+acl = "private/public"
+}
+versioning {
+enabled = "true"
+}

@@ -1,0 +1,257 @@
+SCM
+====
+GIT:
+==== Git is an open-source distributed/version control system for tracking the changes. the term version control system suggests record the all changes in files.
+git allows no of people to work on the project.
+1)using git track the changes
+2)display the logs
+3)to create the branching stratagy
+4)pull requests
+5)fork 
+6)merge conflicts
+7)to set the tags
+
+GITHUB
+======
+github is a centralized platform for version control system, which allow the developers to develop the code & to upload into git hub ,it will manage the scm &to create a new repos,branches,merge,pull
+give collabaraion accees to others.
+
+Build tool
+-=========
+maven:
+====== maven is an open-source build tool/project management tool that is based on pom(project object model),it creates a project structure. its responsible for building, documentation,reporting,scms
+Build tool: a build tool takes care everything about building process
+*)generates source code
+*)prepare document from source code
+*)compile code
+*)create packages(jar,war,ear)==(jar=java archive, war=web application archive,Ear= enterprise archive)
+
+maven contains pom.xml file this is the heart of mvn it consists pluggins,dependencies,packages,project information.
+once to run the mvn goals it create a target file.
+create a project
+================
+mvn archetype:generate
+mvn --version
+mvn clean install ====its clean the before build process and install new file(target file)
+mvn clean package ====its create target file
+mvn compile
+mvn validate
+
+Tomcat
+======
+Tomcat is an open-source application server for deploying the projects,it will support the war files(web-server)
+
+tomcat-users.xml
+================
+<?xml version='1.0' encoding='utf-8'?>
+<tomcat-users>
+  <role rolename="manager-gui"/>
+  <user username="tomcat" password="Tomcat" roles="manager-gui, manager-script, manager-status"/>
+</tomcat-users>
+
+jenkins
+========
+continuous integration:(CI)
+---------------------------
+ci means continuous integration is the process of integrating the code changes from different developers in one project for many times. if once the code is commited into git hub it will
+automatically download the code and build it if everything is ok then the code is moves forward otherwise sended back to developers.
+
+continuous delivery
+=================== =
+
+
+
+
+
+
+
+
+chef
+====
+chef
+====
+chef is an open source configure management tool, configure management in the sence something should be execute/perform on the systems or different servers.
+to perform an action at time in different servers. chef is a pull based configure tool (agent based configure ).
+chef contains:
+chef workstation: workstation is in your local system
+chef server: server is in host
+chef node servers: chef node servers
+
+chef contains cookbooks and cookbook contains many recipes (cookbook contains different tasks)
+
+cd chef-repo
+
+to add the node servers to the chef server
+------------------------------------------
+knife bootstrap ip address -U username -P password -N nodename
+
+cd cookbooks
+to create a cookbook
+chef generate cookbook cookbook name
+ls
+cd cookbook name
+cd recipes
+vi default.rb
+--------------
+file "/opt/file123"
+:wq!
+knife cookbook upload cookbook name  ------>uploading cookbook into chef server
+refresh your chef.io server
+node-->key run list-->
+1.drag and drop your cookbook in run list
+2.knife node run_list add node name "recipe[cookbook]"
+ knife node run_list remove node name "recipe[cookbook]"
+
+node server
+----------
+chef-client
+
+particular cookbook is add to different nodes
+=============================================
+for i in node1 node2
+do
+knife node run_list "recipe[cookbook]", "recipe[cookbook]"
+done
+----------
+data bags
+==========
+data bags are the global variables i.e, created in workstation & upload into chef server 
+mkdir data_bags
+cd data_bags
+mkdir users groups
+ls
+knife data bag create users
+knife data bag create groups
+--> refresh in chef server
+cd users
+vi user1.json
+-------------
+{
+"id": "prabhakar",
+"comment": "welcome to devops",
+"uid": 200,
+"gid": 01,
+"home": "/home/prabhakar",
+"shell": "/bin/bash"
+}
+
+vi user2.json
+---------------
+{
+"id": "bhaskar",
+"comment": "welcome to devops",
+"uid": 2002,
+"gid": 011,
+"home": "/home/bhaskar",
+"shell": "/bin/bash"
+}
+
+-->knife data bag from file users userl.json user2.json
+ 
+cd groups
+vi group.json
+-----------
+{
+"id": "batch85",
+"gid": 300,
+"members": ["user1","user2"]
+}
+
+knife data bag from file groups group.json
+
+cd cookbooks
+chef generate cookbook users
+cd users
+cd recipes
+vi default.rb
+-------------
+search("users", "*:*").each do |user_data|
+user user_data["id"] do
+comment user_data["comment"]
+uid user_data["uid"]
+gid user_data["gid"]
+home user_data["home"]
+shell user_data["shell"]
+end
+end
+
+vi group.rb
+------------
+search("groups", "*:*").each do |group_data|
+group group_data["id"] do
+gid group_data["gid"]
+members group_data["members"]
+end
+end
+
+knife cookbook upload users
+knife cookbook upload groups
+
+drag & drop cookbooks into run list & save
+add users::group
+
+----
+vi default.rb
+-----
+.
+..
+
+..
+include_recipe "users::group"
+
+:wq!
+
+
+Ansible
+========
+Ansible is an open-source one of the configure management tool,by using ansible to parallelly work on no of servers/systems at a time.
+ansible is a agent-less configure management tool.
+ansible contains playbooks
+playbook
+--------
+playbook consists set of instructions to perform an action (infrastructure as code), it should in yaml format(yet another markup language)
+
+playbook.yml
+============
+---
+- host: all
+  become: yes(true)
+  tasks:
+  - name: installing git
+    yum: name=git state=latest
+  - name: removing git
+    yum: name=git state=absent
+
+===> ansible-playbook playbook.yml
+
+playbook1.yml
+=============
+---
+- hosts: all
+  become: yes
+  tasks:
+  - name: installing httpd service
+    yum: name=httpd state=present
+  - name: start the httpd service
+    service: name=httpd state=started
+
+===> ansible-playbook playbook1.yml
+
+copy module
+==========
+palybook2.yml
+-------------
+---
+- hosts: all
+  become: yes
+  tasks:
+  - name: copy the files
+    copy: src=path
+          des=path
+
+===> ansible-playbook playbook2.yml
+    
+
+
+
+

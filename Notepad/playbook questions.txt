@@ -1,0 +1,67 @@
+1. Write a playbook to install git, maven, docker and run docker service. 
+
+a)
+playbook1.yaml
+==============
+
+---
+- hosts: all
+  become: yes
+  tasks:
+  - name: installing git
+    yum: name=git state=latest
+  - name: installing maven
+    yum: name=maven state=present
+  - name: install docker
+    yum: name=docker state=present
+  - name: start the docker service
+    service: 
+      name: docker
+      state: started
+
+2. Write a playbook to clone git repository.
+a)
+playbook2.yaml
+==============
+
+---
+- hosts: all
+  become: yes
+  tasks:
+  - name: Clone a github repository
+    git:
+      repo: https://github.com/sqlite/sqlite.git
+      dest: /home/debian/repos/
+      clone: yes
+      update: yes
+3). Write a playbook to pull updated code from the git repository.
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: pull from git
+      git:
+        repo: git@gitlab.com:xyz.git
+        dest: /root/Development/abc
+        update: yes
+        version: master    
+
+4)Write a playbook to build docker image from the docker file. 
+
+---
+- hosts: all
+  become: yes
+  tasks:
+  - name: build docker image
+    command: docker build -t dockerfile.yml .
+
+5)Write a playbook to run docker container from the docker image that 
+you have built. 
+
+--- 
+- hosts: all
+  become: yes
+  tasks:
+  - name: run the docker container from the docker image
+    command: docker run -itd -p 8081:8080 --name cont1 imagename
+  

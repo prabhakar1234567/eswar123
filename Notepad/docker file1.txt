@@ -1,0 +1,193 @@
+
+Docker
+=======
+docker is an open source centralized platform for developing, deploying, shipping and running applications, docker will allow the developer to packaging the applications of all libraries 
+and dependencies into one container, the reason for developing docker is to easily packaging and shipping the containers.
+docker contains images and containers
+-----
+images:docker contains images it will pull by docker hub.com, images are acts as set of rules that will execute it , it contains all confirues of container
+------
+containers:containers are used to store the data & shiiping the applications from one to one easily.here also same the applications will deploy from one to another place,.....
+-----------
+containers are very cheap and dont waste the memory space.
+
+docker installation
+---------------------
+get.docker.com
+================
+curl fsSL https://get.docker.com -O get-docker.sh
+
+sh get-docker.sh
+
+--> first start the docker service
+-----------------------------------
+systemctl start docker
+
+systemctl stop firewalld
+
+docker images    ---->will display the list of images in docker
+
+docker ps        ----> will display docker containers
+
+docker ps -a     ----> will display docker all containers
+
+docker ps -aq    ----> will display only containers list
+
+docker pull centos:7 ----> download centos image from docker hub
+docker pull ubuntu   ----> download ubuntu image from docker hub
+......
+
+creating containers from images
+================================
+docker run -it centos    ----> creates container from centos image (-it-->interactive terminal)
+docker run -itd centos   ----> creates container from centos image ( d-->detached mode)
+docker attach cid
+
+exit ---> stop the container & leave the container
+ctrl+pq ---> container is running but you leave the container
+
+delete container
+================
+docker rm -f cid
+
+delete images
+=============
+docker rmi -f imageid/image
+
+give particular image tag name
+===============================
+docker tag imageid "tag name"
+
+
++++++++++++++++++++++++++++++++++++++++
+to create image from container
+============================
+docker commit cid   ----> image will create
+
+docker push imagename  -----> upload image to docker hub
+
+dockerfile:it contains all the information and create a image when you build the dockerfile
+==========
+vi dockerfile
+-------------
+FROM centos:7
+MAINTAINER "prabhakar"
+RUN mkdir /opt/dir1
+RUN yum install git -y
+RUN git config --global user.name "prabhakar"
+RUN git config --global user.email "prabhakar@gmail.com"
+COPY tomcat-users.xml /opt
+RUN yum install wget -y
+RUN cd /opt && wget htpps://tomcat..................
+RUN cd /opt && tar -xvf file
+EXPOSE port number
+CMD git --version
+
+:wq!
+-----
+docker build -t "name" .
+
+image will create
+
+what is cmd:
+-----------
+The CMD command​ specifies the instruction that is to be executed when a Docker container starts.
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+webapps 
+==========
+httpd:;;;
+------
+docker pull tutum/hello-world
+docker run -itd -p 80:80 name
+docker attach container id  ----> not work for webapps & run in ditached mode only
+docker exec -itd cid path(/bin/sh)or(bin/bash)
+and browse the hostname with:80
+
+-------------------------
+nginx
+-----
+same for nginx
+==================
+tomcat
+======
+docker pull tomcat/tomcat01
+...
+...
+...
+..
+change in conf --- tomcat-users.xml
+change  webapps/manager/META-INF/context.xml----> ".*"
+and restart the tomcat server and browse
+----------------------------
+
+copy the data from particular container
+==============================
+docker cp source cid:/opt
+
+
+docker volumes
++==============
+for suppose any changes are made in host os or containers it will automatically came to all by using volumes
+
+shared data from host os to container
+------------------------
+docker run -itd -v /opt/sample:/opt/ps centos
+
+shared data from container to container
+-----------------------------------
+docker run -itd --volumes-from cid centos
+
+
+docker logs
+-----------
+docker logs cid    -----> display the logs of cid
+
+history
+========
+docker history imagename ------> history of image
+
+rename of container
++++++++++++++++++++
+docker rename oldname newname
+
+set a container name
+====================
+docker run -itd --name name imagename
+
+commands
+=========
+docker pause cid
+docker unpause cid
+
+set hostname
+==========
+docker run -it -h host1 image
+
+
+inspect:: to display the whole information about it
+=========================================
+========================
+docker inspect cid
+
+
+Events
+++=+++=++
+perform actions or do some functionality
+
+
+docker events -f events=stop
+docker events -f events=start   -------> -f specially
+
+Networking
+-----------------
+to give particular port number and .......
+
+docker network create --subnet 10.1.0.0/16 --gateway 10.0.0.1 --ip-range 10.1.5.0/24 --driverbridge --lable test-network bridge1
+
+stats
+=====
+to see the memory usage of the containers
+
+docker stats cid

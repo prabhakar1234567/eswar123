@@ -1,0 +1,227 @@
+Ansible
+========
+Ansible is an open-source configure management tool,developed by apache software i.e, it means parallely work on no of servers at a time.
+ansible is a push based agent-less configure management tool,ansible is very easy to install & easy to use.
+it can be like,
+1.creating/deleting the users/groups
+2.Insalling packages
+3.creating/deleting files/folders
+4.changing permissions
+5.deploying applications
+
+Ansible installations
+=======================
+yum install epel-release -y
+yum install openssl -y
+yum install ansible -y
+
+useradd ansible
+visudo
+ansible ALL=(ALL) NOPASSWD: ALL
+go to cd /etc/ansible
+ls
+ansible.cof  hosts
+cd /ansible.cof
+uncomment inventory & sudoers
+cd hosts
+IP addreess
+cd
+su ansible 
+===========
+node server
+===========
+useradd ansible 
+visudo
+ansible ALL=(ALL) NOPASSWD: ALL
+
+ssh-keygen   ====> ansible server to generate a key
+ssh-copy-id ansible@IP 
+(the key is in .ssh -->public-rdsa key) --->in ansible server ---> in node .ssh-->authorized keys
+
+ansible server
+---------------
+ansible all -m ping
+
+playbook:
+========
+in ansible playbook is a text file it consists list of tasks to be execute in order agaiinst to hosts
+
+play:
+----- play is a way to execute the tasks in playbook
+
+Roles:
+-----
+in ansible role(i,e.job,task) consists tasks,files, templates,modules,variables, role is not a playbook, its a
+just a small functionality in playbook.
+
+--- 
+- hosts: tomcat-node 
+roles: 
+   - {role: install-tomcat} 
+   - {role: start-tomcat} 
+
+debug:
+debug is a module to print the msg
+---
+- hosts: all
+  tasks:
+    - name: Print message
+      debug:
+        msg: Hello Ansible World
+handlers:
+---------
+Handlers are usually used to start, restart, reload and stop services on target nodes only when there is a change 
+in the state of the task, and not when no change is made.
+
+In Ansible, a handler refers to a particular task that executes when triggered by the notify module.
+
+ansible galaxy:
+==============
+ansible galaxy is a large public repository of ansible roles.
+
+ansible-galaxy init ---->You can initialize a new galaxy role using
+ansible-galaxy install rollname
+ansible-galaxy list displays a list of installed roles, with version numbers.
+
+ansible-galaxy remove <role> removes an installed role.
+
+ansible-galaxy info provides a variety of information about Ansible Galaxy.
+
+
+playbook;
+=========
+playbook1.yml
+=============
+---
+- hosts: all
+  become: yes
+  tasks:
+  - name: installing httpd
+    yum: name=httpd state=latest
+  - name: start the httpd service
+    service: name=httpd state=started
+
+ansible-playbook playbook1.yml
+
+playbook for handlers
+=======================
+2)playbook2.yml
+  -------------
+---
+- hosts: all
+  become: true
+  tasks:
+    - name: Install the latest version of Apache
+      yum: name=httpd state=latest
+
+      notify:
+       - Start Apache
+
+  handlers:
+     - name: Start Apache
+       service:
+         name: httpd
+         state: started
+
+3)playbook3.yml
+---------------
+---
+  # Play1 - WebServer related tasks
+  - name: Play Web - Create apache directories and username in web servers
+    hosts: webservers
+    become: yes
+    become_user: root
+    tasks:
+      - name: create username apacheadm
+        user:
+          name: apacheadm
+          group: users,admin
+          shell: /bin/bash
+          home: /home/weblogic
+
+      - name: install httpd
+        yum:
+          name: httpd
+          state: installed
+
+variables:
+----------
+variables are the containers to storee the data
+
+variables.yml
+=============
+---
+  - name: Playbook
+    hosts: webservers
+    become: yes
+    become_user: root
+    vars:
+       key_file:  /etc/apache2/ssl/mywebsite.key
+       cert_file: /etc/apache2/ssl/mywebsite.cert
+       server_name: www.mywebsite.com
+    tasks:
+      - name: ensure apache is at the latest version
+        yum:
+          name: httpd
+          state: latest
+
+to call the variables in ansible playbook
+========================================
+playbook4.yml
+=============
+---
+  - name: Playbook
+    hosts: webservers
+    become: yes
+    become_user: root
+    vars_files:
+        - apacheconf.yml
+    tasks:
+      - name: ensure apache is at the latest version
+        yum:
+          name: httpd
+          state: latest
+
+
+
+
+
+
+
+
+
+
+ansible installation in redhat linux
+===========================
+useradd annsible
+passwd ansible
+visudo
+ansible  ALL=(ALL)  NOPASSWD: ALL
+vi etc/ssh/sshd_config
+passwdauthentication: yes
+systemctl restart sshd
+
+sudo yum install python3 -y
+python3 --version
+python --version
+sudo yum -y install python3-pip
+
+sudo pip3 install ansible --user
+   10  ansible --version
+   11  sudo ansible --version
+   12  sudo yum install ansible -y
+   17  sudo rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+   20  sudo yum install epel-release
+   21  sudo yum repolist
+   22  sudo yum install openssl -y
+   23  sudo yum install ansible -y
+   24  sudo ansible --version
+   25  cd /etc/ansible/
+   26  ls
+   27  vi hosts
+   28  sudo vi hosts
+   29  vi ansible.cfg
+   30  ssh-keygen
+   31  ssh-copy-id localhost
+   32  ansible all -m ping
+   33  history

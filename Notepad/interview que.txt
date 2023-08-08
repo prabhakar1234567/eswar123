@@ -1,0 +1,31 @@
+Interview questions
+--------------------
+*)why did you regine your job without any offer?
+
+The reason is for my carrer growth, the project is completed there is no project from last one month
+there is no chance to improve my skills,i want to improve my advanced skills,
+and also most of the companies were seeing those who are join immediately as well.
+
+*)roles and responsibilites?
+
+Hi, my self prabhakar ihave 2+ years of experience as a devops engineer in synechrone technology
+and 2+ years of relevent experience in devops tools like git, github,for scm and build for maven 
+jenkins,configure management for ansible and docker as well as kubernetes with aws.
+
+as part of my roles and responsibilites is to setup and manage jobs and configure the process
+setup the ansible servers and writing playbooks
+creating custom images and shipping run the applications.
+managing containers,pods server setup,k8s nodes manage,k8s cluster upgration.
+
+*) day to day activites?
+
+yah start with checking mails and reply to mails 
+attending meetings
+discuss with team and split the work
+creating new jobs for new projects
+checking servers are running or not
+writing playbooks for automate process
+managing the nodes and containers
+to deploy the projects into dev uat preprod
+
+

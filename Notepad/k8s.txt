@@ -1,0 +1,4 @@
+k8s
+=====
+kubeadm join 172.31.9.97:6443 --token cxrjhr.ay8um7lju4cjoqc8 \
+        --discovery-token-ca-cert-hash sha256:2217824121c1002c656380d288b22069d19606d401a7bc87bafbe7af6a5a51de
